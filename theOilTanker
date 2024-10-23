@@ -1,0 +1,132 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
+
+@TeleOp(name="theOilTanker")
+
+public class theOilTanker extends OpMode{
+
+    public DcMotor  leftFront   = null;
+    public DcMotor  rightFront  = null;
+    public DcMotor  leftRear    = null;
+    public DcMotor  rightRear   = null;
+    public DcMotor  leftArm     = null;
+    public DcMotor  rightArm    = null;
+    public DcMotor  slideArm    = null;
+    public DcMotor  spoolArm    = null;
+    
+    public Servo    wristServo  = null;
+    
+    public CRServo  clawServo   = null;
+    
+//Hudson Lucas touch this variable and youre demoted.
+double Pow = 0.5;
+
+    @Override
+    public void init() {
+        
+        leftFront   = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront  = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear    = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear   = hardwareMap.get(DcMotor.class, "rightRear");
+        leftArm     = hardwareMap.get(DcMotor.class, "leftArm");
+        rightArm    = hardwareMap.get(DcMotor.class, "rightArm");
+        slideArm    = hardwareMap.get(DcMotor.class,"slideArm");
+        spoolArm    = hardwareMap.get(DcMotor.class,"spoolArm");
+        wristServo    = hardwareMap.get(Servo.class,"wristServo");
+        clawServo   = hardwareMap.get(CRServo.class,"clawServo");
+
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
+        leftArm.setDirection(DcMotor.Direction.FORWARD);
+        rightArm.setDirection(DcMotor.Direction.REVERSE);
+        slideArm.setDirection(DcMotor.Direction.FORWARD);
+        spoolArm.setDirection(DcMotor.Direction.FORWARD);
+
+        telemetry.addData(">", "UR MOM");    //
+
+    }
+
+    @Override
+    public void loop() {
+        double left;
+        double right;
+        double left2;
+        double right2;
+
+  
+        left = -gamepad1.left_stick_y;
+        right = -gamepad1.right_stick_y;
+        left2 = -gamepad2.left_stick_y;
+        right2 = -gamepad2.right_stick_y;
+        leftFront.setPower(left);
+        rightFront.setPower(right);
+        leftRear.setPower(left);
+        rightRear.setPower(right);
+        leftArm.setPower(left2);
+        rightArm.setPower(left2);
+        slideArm.setPower(right2);
+        spoolArm.setPower(right2);
+        wristServo.setPosition(0.0); 
+        clawServo.setPower(0.0);
+        if (gamepad1.left_bumper){
+            leftFront.setPower(-1.0) ;
+            rightFront.setPower(1.0) ;
+            leftRear.setPower(1.0) ;
+            rightRear.setPower(-1.0) ;} //strafe right
+        else if (gamepad1.right_bumper){
+            leftFront.setPower(1.0) ;
+            rightFront.setPower(-1.0) ;
+            leftRear.setPower(-1.0) ;
+            rightRear.setPower(1.0) ;} //strafe left
+        else if (gamepad1.x){
+            leftFront.setPower(-1.0) ;
+            rightFront.setPower(1.0) ;
+            leftRear.setPower(-1.0) ;
+            rightRear.setPower(1.0) ;} //rotate counterclockwise
+        else if (gamepad1.b){
+            leftFront.setPower(1.0) ;
+            rightFront.setPower(-1.0) ;
+            leftRear.setPower(1.0) ;
+            rightRear.setPower(-1.0) ;} //rotate clockwise
+        else if (gamepad1.y){
+            leftFront.setPower(0.5) ;
+            rightFront.setPower(0.5) ;
+            leftRear.setPower(0.5) ;
+            rightRear.setPower(0.5) ;} //slow mode forward
+        else if (gamepad1.a){
+            leftFront.setPower(-0.5) ;
+            rightFront.setPower(-0.5) ;
+            leftRear.setPower(-0.5) ;
+            rightRear.setPower(-0.5) ;} //slow mode backward
+/*————————————————————————Gamepad 2—————————————————————————————————————————*/
+        if(gamepad2.left_bumper){
+            
+            }
+        else if(gamepad2.right_bumper){
+            
+            }
+        else{
+            
+            }
+
+        telemetry.addData("left", "%.2f", left);
+        telemetry.addData("right", "%.2f", right);
+        telemetry.addData("armPos", "%.2f", left2);
+        telemetry.addData("Servo Position", "Pow: %.2f", Pow);  // Display Pow on telemetry
+
+    }
+
+    @Override
+    public void stop() {
+    }
+}
+
